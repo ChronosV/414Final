@@ -6,11 +6,15 @@ Jg = 6.2e-6;    %Gearbox inertia
 Js = 1.4e-7;    %Angular sensor inertia
 Gv = 5;         %Voltage amplifier gain
 Ks = 10;    %touch sensor, in V/m
-Ra = 1e-2;      %Radius of ball, in meters
+Jc = 5.5271e-6;     %inertia of channel
+Rb = 1e-2;      %Radius of ball, in meters
 Rh = 6e-3;      %Height difference between center of ball and top of rail, in meters
-Jb = 0.4*Ra*Ra; %Ball inertia, neglecting the mass
+Mb = 1.1305e-2;     %Mass of ball
+Jb = 0.4*Mb*(Rb)^2; %Ball inertia
 g = 9.81;       %Acceleration of gravity
 N = 10;         %Chosen Gear Ratio
+Jx = Jg + Js + Jb;   %Constant inertia, neglecting motor, w/o channel inertia
+% Jx = Jg + Js + Jc + Jb;   %Constant inertia, neglecting motor
 
 
 %% Find the Nominal plants
@@ -18,10 +22,20 @@ N = 10;         %Chosen Gear Ratio
 
 for n = 1:4;
     motor = motornumber(n);
-    motor.Jeff = motor.Jm + Jb + Jg + Js;
+    motor.Jeff = motor.Jm + Jx;
     
     Kv = 60/(2*pi*motor.Kt(3));
-    numerator = (-Gv.*motor.Kt(3).*Kv.*g)./(motor.L.*motor.Jeff.*N.*
+    Ke = 1/Kv;
+    numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
+    delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
+    
+    motor.G = numerator/delta;
+    
+    Plant(n) = motor;
+    
+    figure(n);
+    rlocus(Plant(n).G);
+end
 
 % for m = 1:4
 %     
