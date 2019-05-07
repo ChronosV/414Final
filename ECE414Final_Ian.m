@@ -25,7 +25,7 @@ for n = 1:4;
     motor.Jeff = motor.Jm + Jx;
     
     Kv = 60/(2*pi*motor.Kt(3));
-    Ke = 1/Kv;
+    Ke = motor.Kt(3);
     numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
     delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
     
