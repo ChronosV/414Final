@@ -20,6 +20,7 @@ Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o channel ine
 %% Find the Nominal plants
 % Need to do this for all for motors
 
+
 for n = 1:4;
     motor = motornumber(n);
     motor.Jeff = motor.Jm + Jx;
