@@ -13,8 +13,8 @@ Mb = 1.1305e-2;     %Mass of ball
 Jb = 0.4*Mb*(Rb)^2; %Ball inertia
 g = 9.81;       %Acceleration of gravity
 N = 10;         %Chosen Gear Ratio
-Jx = Jg + Js + Jb;   %Constant inertia, neglecting motor, w/o channel inertia
-% Jx = Jg + Js + Jc + Jb;   %Constant inertia, neglecting motor
+Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o channel inertia
+% Jx = Jg + (Js + Jc + Jb)/(N^2);   %Constant inertia, neglecting motor
 
 
 %% Find the Nominal plants
