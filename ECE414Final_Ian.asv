@@ -9,11 +9,13 @@ Ks = 10;    %touch sensor, in V/m
 %Jc = 5.5271e-6;     %inertia of channel, which can be neglected
 Rb = 1e-2;      %Radius of ball, in meters
 Rh = 6e-3;      %Height difference between center of ball and top of rail, in meters
-Mb = 1.1305e-2;     %Mass of ball
+% Mb = 1.1305e-2;     %Mass of ball
+Mb = 3.36624e-2;   %Mass of ball if using steel
 %Jb = 0.4*Mb*(Rb)^2; %Ball inertia, which can be neglected
 g = 9.81;       %Acceleration of gravity
 N = 10;         %Chosen Gear Ratio
-Jx = Jg + (Js/(N^2));   %Constant inertia, neglecting motor, w/o ball and beam inertia
+Jt = 3.08e-3;
+Jx = Jg + ((Js + Jt)/(N^2));   %Constant inertia, neglecting motor, w/o ball and beam inertia
 % Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o beam inertia
 % Jx = Jg + (Js + Jc + Jb)/(N^2);   %Constant inertia, neglecting motor
 
@@ -39,16 +41,25 @@ Jx = Jg + (Js/(N^2));   %Constant inertia, neglecting motor, w/o ball and beam i
 %     rlocus(Plant(n).G);
 % end
 
-motor = motornumber(1);
+motor = motornumber(3);
 motor.Jeff = motor.Jm + Jx;
 
 % Kv = 60/(2*pi*motor.Kt(3));
 Kv = 10;
 Ke = motor.Kt(3);
-numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
-delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
+% numerator = (-Gv.*motor.Kt(3).*Kv.*g)/(motor.L.*motor.Jeff.*N.*Mb.*(s^5));
+% delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
 
-motor.G = numerator/delta;
+num = (-Gv.*Ke.*Kv.*g)/(motor.L.*motor.Jeff.*N.*Mb.*(s^5));
+den = 1 + (((motor.R/motor.L) + (motor.Bm/motor.Jeff))/s) + ((Ke^2 + motor.R.*motor.Bm)/(motor.L*motor.Jeff))/(s^2);
+
+% num = (-Gv*motor.Kt(3)*Kv*g)/(motor.L*motor.Jeff*N*Mb);
+% den = [1, ((motor.R/motor.L) + (motor.Bm/motor.Jeff)), ((Ke^2 + motor.R*motor.Bm)/(motor.L*motor.Jeff)), 0, 0, 0];
+% motor.G = tf(num, den);
+% Gnom = motor.G;
+
+% motor.G = numerator/delta;
+motor.G = num/den;
 Gnom = motor.G;
 
 Gans = minreal(Gnom);
