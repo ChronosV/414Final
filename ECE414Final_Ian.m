@@ -6,14 +6,15 @@ Jg = 6.2e-6;    %Gearbox inertia
 Js = 1.4e-7;    %Angular sensor inertia
 Gv = 5;         %Voltage amplifier gain
 Ks = 10;    %touch sensor, in V/m
-Jc = 5.5271e-6;     %inertia of channel
+%Jc = 5.5271e-6;     %inertia of channel, which can be neglected
 Rb = 1e-2;      %Radius of ball, in meters
 Rh = 6e-3;      %Height difference between center of ball and top of rail, in meters
 Mb = 1.1305e-2;     %Mass of ball
-Jb = 0.4*Mb*(Rb)^2; %Ball inertia
+%Jb = 0.4*Mb*(Rb)^2; %Ball inertia, which can be neglected
 g = 9.81;       %Acceleration of gravity
 N = 10;         %Chosen Gear Ratio
-Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o channel inertia
+Jx = Jg +Jb/(N^2)   %Constant inertia, neglecting motor, ball, and channel inertia
+%Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o channel inertia
 % Jx = Jg + (Js + Jc + Jb)/(N^2);   %Constant inertia, neglecting motor
 
 
