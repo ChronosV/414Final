@@ -13,7 +13,8 @@ Mb = 1.1305e-2;     %Mass of ball
 Jb = 0.4*Mb*(Rb)^2; %Ball inertia
 g = 9.81;       %Acceleration of gravity
 N = 10;         %Chosen Gear Ratio
-Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o channel inertia
+Jx = Jg + (Js/(N^2));   %Constant inertia, neglecting motor, w/o ball and beam inertia
+% Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o beam inertia
 % Jx = Jg + (Js + Jc + Jb)/(N^2);   %Constant inertia, neglecting motor
 
 
