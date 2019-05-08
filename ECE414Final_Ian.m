@@ -21,22 +21,37 @@ Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o channel ine
 % Need to do this for all for motors
 
 
-for n = 1:4;
-    motor = motornumber(n);
-    motor.Jeff = motor.Jm + Jx;
-    
-    Kv = 60/(2*pi*motor.Kt(3));
-    Ke = motor.Kt(3);
-    numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
-    delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
-    
-    motor.G = numerator/delta;
-    
-    Plant(n) = motor;
-    
-    figure(n);
-    rlocus(Plant(n).G);
-end
+% for n = 1:4;
+%     motor = motornumber(n);
+%     motor.Jeff = motor.Jm + Jx;
+%     
+%     Kv = 60/(2*pi*motor.Kt(3));
+%     Ke = motor.Kt(3);
+%     numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
+%     delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
+%     
+%     motor.G = numerator/delta;
+%     
+%     Plant(n) = motor;
+%     
+%     figure(n);
+%     rlocus(Plant(n).G);
+% end
+
+motor = motornumber(4);
+motor.Jeff = motor.Jm + Jx;
+
+Kv = 60/(2*pi*motor.Kt(3));
+Ke = motor.Kt(3);
+numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
+delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
+
+motor.G = numerator/delta;
+Gnom = motor.G;
+
+Gans = minreal(Gnom);
+rltool(Gans);
+
 
 % for m = 1:4
 %     
