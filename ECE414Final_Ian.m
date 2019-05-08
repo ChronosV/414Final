@@ -10,6 +10,7 @@ Ks = 10;    %touch sensor, in V/m
 Rb = 1e-2;      %Radius of ball, in meters
 Rh = 6e-3;      %Height difference between center of ball and top of rail, in meters
 Mb = 1.1305e-2;     %Mass of ball
+%Mb = 3.36624e-2;   %Mass of ball if using steel
 %Jb = 0.4*Mb*(Rb)^2; %Ball inertia, which can be neglected
 g = 9.81;       %Acceleration of gravity
 N = 10;         %Chosen Gear Ratio
