@@ -39,11 +39,11 @@ Jx = Jg + (Js/(N^2));   %Constant inertia, neglecting motor, w/o ball and beam i
 %     rlocus(Plant(n).G);
 % end
 
-motor = motornumber(4);
+motor = motornumber(1);
 motor.Jeff = motor.Jm + Jx;
 
 % Kv = 60/(2*pi*motor.Kt(3));
-Kv = 0.1;
+Kv = 10;
 Ke = motor.Kt(3);
 numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
 delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
