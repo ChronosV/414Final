@@ -41,7 +41,7 @@ Jx = Jg + (Jt/(N^2));   %Constant inertia, neglecting motor
 %     rlocus(Plant(n).G);
 % end
 
-motor = motornumber(1);
+motor = motornumber(3);
 motor.Jeff = motor.Jm + Jx;
 
 % Kv = 60/(2*pi*motor.Kt(3));
@@ -64,6 +64,10 @@ Gnom = motor.G;
 
 Gans = minreal(Gnom);
 rltool(Gans);
+
+
+
+
 
 
 % for m = 1:4
