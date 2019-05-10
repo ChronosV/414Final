@@ -66,7 +66,7 @@ Gans = minreal(Gnom);
 rltool(Gans);
 
 
-
+%%
 
 
 
