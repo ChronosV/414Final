@@ -42,16 +42,20 @@ Jx = Jg + (Jt/(N^2));   %Constant inertia, neglecting motor
 % end
 
 motor = motornumber(3);
-motor.Jeff = motor.Jm + Jx;
+Jeff = motor.Jm + Jx;
 
 % Kv = 60/(2*pi*motor.Kt(3));
 Kv = 10;
-Ke = motor.Kt(3);
+Kt = motor.Kt(3);
+Ke = Kt;
+L = motor.L;
+R = motor.R;
+Bm = motor.Bm;
 % numerator = (-Gv.*motor.Kt(3).*Kv.*g)/(motor.L.*motor.Jeff.*N.*Mb.*(s^5));
 % delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
 
-num = (-Gv.*Ke.*Kv.*g)/(motor.L.*motor.Jeff.*N.*Mb.*(s^5));
-den = 1 + (((motor.R/motor.L) + (motor.Bm/motor.Jeff))/s) + ((Ke^2 + motor.R.*motor.Bm)/(motor.L.*motor.Jeff))/(s^2);
+num = (-Gv.*Ke.*Kv.*g)/(L.*Jeff.*N.*Mb.*(s^5));
+den = 1 + (((R/L) + (Bm/Jeff))/s) + ((Ke^2 + R.*Bm)/(L.*Jeff))/(s^2);
 
 % num = (-Gv*motor.Kt(3)*Kv*g)/(motor.L*motor.Jeff*N*Mb);
 % den = [1, ((motor.R/motor.L) + (motor.Bm/motor.Jeff)), ((Ke^2 + motor.R*motor.Bm)/(motor.L*motor.Jeff)), 0, 0, 0];
@@ -59,49 +63,10 @@ den = 1 + (((motor.R/motor.L) + (motor.Bm/motor.Jeff))/s) + ((Ke^2 + motor.R.*mo
 % Gnom = motor.G;
 
 % motor.G = numerator/delta;
-motor.G = num/den;
-Gnom = motor.G;
+G = num/den;
 
-Gans = minreal(Gnom);
+Gans = minreal(G);
 rltool(Gans);
 
 
-%%
 
-
-
-% for m = 1:4
-%
-%     motor = motornumber(m); % Choose one of the four available motors
-%     Inertia calculations
-%     motor.Jsys = motor.Jm + d.Jx;   % Calculate total system inertia
-%
-%     whole plant
-%     Numerator = (d.Gv .* motor.Kt * d.Ks * d.Rp)./(motor.L .* motor.Jsys);
-%     sOneTerm = (motor.R/motor.L)+(motor.Bm./motor.Jsys);
-%     sZeroTerm = (((motor.Kt).^2)+ motor.R * motor.Bm)./(motor.L .* motor.Jsys);
-%
-%     Velocity
-%     Znum =(motor.Kt)./(motor.L.*motor.Jsys);
-%     Zden =(s^2 + (motor.R/motor.L)*s+(motor.Bm./motor.Jsys).*s+((motor.Kt.^2 + motor.R*motor.Bm)./(motor.L.*motor.Jsys)));
-%
-%     Current
-%     Curr_plant_num = (d.Gv/motor.L)*(s+(motor.Bm./motor.Jsys));
-%     Curr_plant_den = s^2+((motor.R/motor.L)+(motor.Bm./motor.Jsys))*s + ((((motor.Kt).^2)+motor.R*motor.Bm)./(motor.L.*motor.Jsys));
-%
-%     Calculate open loop transfer functions
-%     for j = 1:3
-%         motor.G(j) = Numerator(j)/(s*(s^2 + sOneTerm(j) * s + sZeroTerm(j))); % Calculate plant transfer function
-%         Z(j) = Znum(j)/Zden(j);
-%         motor.Vel(j) = d.Ks*Z(j)*d.Gv*d.Rp;
-%         motor.Cur(j) = Curr_plant_num(j)/Curr_plant_den(j);
-%         motor.Volt(j) = d.Gv;
-%     end
-%
-%     Save the data so we have it for later
-%     Plant(m) = motor;
-%
-%     Plot Root Locus of plant transfer function
-%     figure(m+10); clf;
-% 	rlocus(Plant(m).G);
-% end
