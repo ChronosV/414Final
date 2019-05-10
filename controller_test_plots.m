@@ -3,7 +3,7 @@ close all
 % Motor 4
 % figure(11)
 % rlocus(G_1_Single)
-C_1 = C;
+% C_1 = C;
 C = tf(C);
 % rltool(G_1_Single)
 L_num1 = conv2(G_1_Single.num{1,:},C.num{1,:});
@@ -51,7 +51,7 @@ title('Control Effort for Motor 1');
 
 %% Input to Current Transfer Function Characteristics for Motor 1
 % Find the input to current path for I(s)/R(s)
-C_1_zpk = zpk(C);
+C_zpk = zpk(C);
 N = 10;                     % Set N = 10
 for i = 1:length(Kt_1)         
     s4 = tf([1 0 0 0 0],[1]);   % make a s^4 term
