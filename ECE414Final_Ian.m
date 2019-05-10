@@ -46,8 +46,8 @@ Jeff = motor.Jm + Jx;
 
 % Kv = 60/(2*pi*motor.Kt(3));
 Kv = 10;
-Kt = motor.Kt(3);
-Ke = Kt;
+Kt = motor.Kt;
+Ke = Kt(3);
 L = motor.L;
 R = motor.R;
 Bm = motor.Bm;
@@ -66,7 +66,7 @@ den = 1 + (((R/L) + (Bm/Jeff))/s) + ((Ke^2 + R.*Bm)/(L.*Jeff))/(s^2);
 G = num/den;
 
 Gans = minreal(G);
-rltool(Gans);
+% rltool(Gans);
 
 
 
