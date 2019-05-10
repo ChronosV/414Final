@@ -1,5 +1,5 @@
 %% Controller design for Motors 1 and 4
-% close all
+close all
 % Motor 4
 % figure(11)
 % rlocus(G_1_Single)
@@ -64,42 +64,42 @@ IRS = Is/Rs;                % Find I(s)/R(s)
 IRS_Simplify = minreal(IRS) % Simplify for use in report
 figure(14)
 hold on
-lsim(IRS, Pos(t),t)               % Find the response to the desired input
-title('Input to Current Response Motor');
+lsim(IRS,Pos(t),t)               % Find the response to the desired input
+title('Input to Current Response Motor 1');
 hold off
-
+end
 % legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Input to phase Transfer Function Characteristics for Motor 1
 % Find the input to phase path for O(s)/R(s)
-  
-s2 = tf([1 0 0],[1]);       % make a s^2 term
-Os = ((K*C*Gv*Kt)/(L*Jeff*N))*s2;     % Numerator for O(s)/R(s)   
-ORS = Os/Rs;                % Find O(s)/R(s)
-ORS_Simplify = minreal(ORS) % Simplify fo use in report
-figure(15)
-hold on
-lsim(ORS, Pos(t),t)               % Find the response to the desired input
-title('Input to Phase Response Motor');
-hold off
-
-% legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
+for i = 1:length(Kt_1)    
+    s2 = tf([1 0 0],[1]);       % make a s^2 term
+    Os = ((K*C*Gv*Kt_1)/(L_1*J_eff_10*N))*s2;     % Numerator for O(s)/R(s)   
+    ORS = Os/Rs;                % Find O(s)/R(s)
+    ORS_Simplify1 = minreal(ORS) % Simplify fo use in report
+    figure(15)
+    hold on
+    lsim(ORS(i),Pos1(t),t)               % Find the response to the desired input
+    title('Input to Phase Response Motor 1');
+    hold off
+end
+legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Input to Output Transfer Function Characteristics for Motor 1
 % Find the input to phase path for Y(s)/R(s)
-  
-Ys = ((K*C*Gv*Kt*-g*Kv)/(L*Jeff*N*Mb));     % Numerator for Y(s)/R(s)   
-YRS = Ys/Rs;                % Find Y(s)/R(s)
-YRS_Simplify = minreal(YRS);     % Simplify fo use in report
-figure(16)
-hold on
-lsim(YRS, Pos(t),t)               % Find the response to the desired input
-title('Input to Output Response Motor');
-hold off
-
-% legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
+for i = 1:length(Kt_1)    
+    Ys = ((K*C*Gv*Kt_1*-g*Kv)/(L_1*J_eff_10*N*M));     % Numerator for Y(s)/R(s)   
+    YRS = Ys/Rs;                % Find Y(s)/R(s)
+    YRS_Simplify1 = minreal(YRS) % Simplify fo use in report
+    figure(16)
+    hold on
+    lsim(YRS(i),Pos1(t),t)               % Find the response to the desired input
+    title('Input to Output Response Motor 1');
+    hold off
+end
+legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Control Effort Transfer function characteristics for Motor 4
