@@ -372,11 +372,11 @@ legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Control Effort Transfer function characteristics for Motor 4
-Tu4 = Tf4/G_4_Single;         % Find the control effort from T/G
-Tu_Simplify_4 = minreal(Tu4)   % Simplify for use in report
-figure(17)
-lsim(Tu4,Pos1(t),t)                % Find the response to the desired input
-title('Control Effort for Motor 4');
+%Tu4 = Tf4/G_4_Single;         % Find the control effort from T/G
+%Tu_Simplify_4 = minreal(Tu4)   % Simplify for use in report
+%figure(17)
+%lsim(Tu4,Pos1(t),t)                % Find the response to the desired input
+%title('Control Effort for Motor 4');
 
 
 %% Input to Current Transfer Function Characteristics for Motor 4
