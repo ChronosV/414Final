@@ -33,7 +33,9 @@ end
 % Create an input pulse signal
 % [Vel1, Acc1, Pos1] = spulse([0 2.5 2.5 5], 0.1962, 1);
 % [Vel, Acc, Pos] = spulse([0 0.25 0.75 1] * 7, 0.0936, 1);
-[Vel, Acc, Pos] = spulse([0 0.25 0.75 1], 0.0654, 1);
+%[Vel, Acc, Pos] = spulse([0 0.25 0.75 1], 0.0654, 1);
+ [Vel, Acc, Pos] = spulse([0 1.25 3.75 5], 0.1306, 1);  %5 secs
+% [Vel, Acc, Pos] = spulse([0 1 3 4], 0.1634, 1);  %4 secs
 t = linspace(0, 50, 10000);
 
 % Motor 1
@@ -51,6 +53,7 @@ figure(23);
 lsim(Tf(1), Tf(2), Tf(3), Pos(t), t);
 % lsim(Tf, Pos(t), t);
 title('Position vs Time for Closed Loop Tf for Motor');
+ylabel('Distance (meters)');
 legend('Kt = max', 'Kt = min', 'Kt = nominal', 'Location', 'northeast');
 
 % Motor 4
@@ -68,7 +71,8 @@ figure(13);
 % lsim(Tumax, Tumin, Tunom, Pos(t), t);                 % Find the response to the desired input
 lsim(Tu(1), Tu(2), Tu(3), Pos(t), t);
 title('Control Effort for Motor');
-legend('Kt = max', 'Kt = min', 'Kt = nominal', 'Desired', 'Location', 'northeast');
+ylabel('Amplitude (Volts)');
+legend('Kt = max', 'Kt = min', 'Kt = nominal', 'Location', 'northeast');
 
 
 %% Input to Current Transfer Function Characteristics for Motor 1
@@ -88,6 +92,7 @@ figure(14);
 hold on;
 lsim(IRS, Pos(t), t);               % Find the response to the desired input
 title('Input to Current Response Motor');
+ylabel('Amplitude (Amps)');
 hold off;
 end
 legend('Kt = max', 'Kt = min', 'Kt = nominal', 'Location', 'northeast');
