@@ -276,8 +276,8 @@ close all
 C_1 = C;
 C = tf(C);
 % rltool(G_1_Single)
-L_num1 = conv2(G_1_Single.Numerator{1,:},C.Numerator{1,:});
-L_denom1 = conv2(G_1_Single.Denominator{1,:}, C.Denominator{1,:});
+L_num1 = conv2(G_1_Single.num{1,:},C.num{1,:});
+L_denom1 = conv2(G_1_Single.den{1,:}, C.den{1,:});
 T_num1 = L_num1;
 T_denom1 = L_num1 + L_denom1;
 Tf1 = tf(T_num1, T_denom1);
