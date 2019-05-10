@@ -6,8 +6,8 @@
 % C_1 = C;
 C = tf(C);
 % rltool(G_1_Single)
-L_num = conv2(G.num{1,:},C.num{1,:});
-L_den = conv2(G.den{1,:}, C.den{1,:});
+L_num = conv2(G.num{1, :}, C.num{1, :});
+L_den = conv2(G.den{1, :}, C.den{1, :});
 T_num = L_num;
 T_den = L_num + L_den;
 Tf = tf(T_num, T_den);
@@ -29,77 +29,77 @@ Tf = tf(T_num, T_den);
 t = linspace(0, 120, 1000);
 
 % Motor 1
-figure(21)
-lsim(Tf,Vel(t),t)
+figure(21);
+lsim(Tf, Vel(t), t);
 title('Velocity vs Time for Closed Loop Tf for Motor');
-figure(22)
-lsim(Tf,Acc(t),t)
+figure(22);
+lsim(Tf, Acc(t), t);
 title('Acceleration vs Time for Closed Loop Tf for Motor');
-figure(23)
-lsim(Tf,Pos(t),t)
+figure(23);
+lsim(Tf, Pos(t), t);
 title('Position vs Time for Closed Loop Tf for Motor');
 
 % Motor 4
 
 %% Control Effort Transfer function characteristics for Motor 1
 Tu = Tf/G;         % Find the control effort from T/G
-Tu_Simplify = minreal(Tu)  % Simplify for use in report
-figure(13)
-lsim(Tu,Pos(t),t)                 % Find the response to the desired input
+Tu_Simplify = minreal(Tu);    % Simplify for use in report
+figure(13);
+lsim(Tu, Pos(t), t);                 % Find the response to the desired input
 title('Control Effort for Motor');
 
 
 %% Input to Current Transfer Function Characteristics for Motor 1
 % Find the input to current path for I(s)/R(s)
 C_zpk = zpk(C);
-N = 10;                     % Set N = 10
-K = 1;      % Pre-amp gain.
+N = 10;          % Set N = 10
+K = 1;           % Pre-amp gain.
 
-s4 = tf([1 0 0 0 0],[1]);   % make a s^4 term
-Is = ((K*C.*Gv)/L)*s4;  % Numerator for I(s)/R(s)
+s4 = tf([1 0 0 0 0], [1]);   % make a s^4 term
+Is = ((K*C.*Gv)/L)*s4;       % Numerator for I(s)/R(s)
 Rs1 = tf([1, (R/L + Bm./Jeff), ((Kt*Kt)./(L*Jeff) + (R*Bm)./(L.*Jeff)), 0, 0, 0],[1]);
-Rs2 = tf([((C.*Gv*Kt*g*Kv)/(L*Jeff*N*Mb))],[1]);
-Rs = Rs1 - Rs2;             % Denominator for I(s)/R(s)
-IRS = Is/Rs;                % Find I(s)/R(s)
-IRS_Simplify = minreal(IRS) % Simplify for use in report
-figure(14)
-hold on
-lsim(IRS, Pos(t),t)               % Find the response to the desired input
+Rs2 = tf([((C.*Gv*Kt*g*Kv)/(L*Jeff*N*Mb))], [1]);
+Rs = Rs1 - Rs2;              % Denominator for I(s)/R(s)
+IRS = Is/Rs;                 % Find I(s)/R(s)
+IRS_Simplify = minreal(IRS); % Simplify for use in report
+figure(14);
+hold on;
+lsim(IRS, Pos(t), t);               % Find the response to the desired input
 title('Input to Current Response Motor');
-hold off
+hold off;
 
-% legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
+% legend('Kt = 0.2025', 'Kt = 0.225', 'Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Input to phase Transfer Function Characteristics for Motor 1
 % Find the input to phase path for O(s)/R(s)
   
-s2 = tf([1 0 0],[1]);       % make a s^2 term
+s2 = tf([1 0 0], [1]);                % make a s^2 term
 Os = ((K*C*Gv*Kt)/(L*Jeff*N))*s2;     % Numerator for O(s)/R(s)   
-ORS = Os/Rs;                % Find O(s)/R(s)
-ORS_Simplify = minreal(ORS) % Simplify fo use in report
-figure(15)
-hold on
-lsim(ORS, Pos(t),t)               % Find the response to the desired input
+ORS = Os/Rs;                          % Find O(s)/R(s)
+ORS_Simplify = minreal(ORS);          % Simplify fo use in report
+figure(15);
+hold on;
+lsim(ORS, Pos(t), t);                 % Find the response to the desired input
 title('Input to Phase Response Motor');
-hold off
+hold off;
 
-% legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
+% legend('Kt = 0.2025', 'Kt = 0.225', 'Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Input to Output Transfer Function Characteristics for Motor 1
 % Find the input to phase path for Y(s)/R(s)
   
 Ys = ((K*C*Gv*Kt*-g*Kv)/(L*Jeff*N*Mb));     % Numerator for Y(s)/R(s)   
-YRS = Ys/Rs;                % Find Y(s)/R(s)
-YRS_Simplify = minreal(YRS);     % Simplify fo use in report
-figure(16)
-hold on
-lsim(YRS, Pos(t),t)               % Find the response to the desired input
+YRS = Ys/Rs;                                % Find Y(s)/R(s)
+YRS_Simplify = minreal(YRS);                % Simplify fo use in report
+figure(16);
+hold on;
+lsim(YRS, Pos(t), t);                       % Find the response to the desired input
 title('Input to Output Response Motor');
-hold off
+hold off;
 
-% legend('Kt = 0.2025', 'Kt = 0.225','Kt = 0.2475', 'Location', 'northeast');
+% legend('Kt = 0.2025', 'Kt = 0.225', 'Kt = 0.2475', 'Location', 'northeast');
 
 
 %% Control Effort Transfer function characteristics for Motor 4
