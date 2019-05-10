@@ -33,8 +33,9 @@ end
 % Create an input pulse signal
 % [Vel1, Acc1, Pos1] = spulse([0 2.5 2.5 5], 0.1962, 1);
 % [Vel, Acc, Pos] = spulse([0 0.25 0.75 1] * 7, 0.0936, 1);
-[Vel, Acc, Pos] = spulse([0 0.25 0.75 1], 0.0654, 1);
-t = linspace(0, 50, 10000);
+% [Vel, Acc, Pos] = spulse([0 1 3 4], 0.1634, 1);
+[Vel, Acc, Pos] = spulse([0 1.25 3.75 5], 0.1306, 1);
+t = linspace(0, 25, 10000);
 
 % Motor 1
 figure(21);

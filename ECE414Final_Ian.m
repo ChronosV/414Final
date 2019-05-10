@@ -13,7 +13,7 @@ Rh = 6e-3;      %Height difference between center of ball and top of rail, in me
 Mb = 2.1111;   %NOT the mass of the ball
 % Jb = 0.4*Mb*(Rb)^2; %Ball inertia, which can be neglected
 g = 9.81;       %Acceleration of gravity
-N = 15;         %Chosen Gear Ratio
+N = 10;         %Chosen Gear Ratio
 Jt = 1.8;       %Track inertia, calculate by treating it as a rod
 Jx = Jg + (Jt/(N^2));   %Constant inertia, neglecting motor
 % Jx = Jg +(Js + Jb)/(N^2);   %Constant inertia, neglecting motor, w/o beam inertia
@@ -24,49 +24,96 @@ Jx = Jg + (Jt/(N^2));   %Constant inertia, neglecting motor
 % Need to do this for all for motors
 
 
-% for n = 1:4;
-%     motor = motornumber(n);
-%     motor.Jeff = motor.Jm + Jx;
-%
-%     Kv = 60/(2*pi*motor.Kt(3));
-%     Ke = motor.Kt(3);
-%     numerator = (-Gv.*motor.Kt(3).*Kv*g)/(motor.L.*motor.Jeff*N*Mb.*(s^5));
-%     delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
-%
-%     motor.G = numerator/delta;
-%
-%     Plant(n) = motor;
-%
-%     figure(n);
+for n = 1:4;
+    motor = motornumber(n);
+    Jeff = motor.Jm + Jx;
+
+    Kv = 10;
+    Ke = motor.Kt(3);
+    Ke = Kt(3);
+    L = motor.L;
+    R = motor.R;
+    Bm = motor.Bm;
+
+    num = (-Gv.*Ke.*Kv.*g)/(L.*Jeff.*N.*Mb.*(s^5));
+    den = 1 + (((R/L) + (Bm/Jeff))/s) + ((Ke^2 + R.*Bm)/(L.*Jeff))/(s^2);
+    
+    G(n) = num/den;
+    
+    hold on;
+    figure(2);
+    pzmap(G(n));
+    grid on;
+    
+    hold on;
+    figure(3);
+    pzmap(G(n));
+    grid on;
+
+%     figure(1);
 %     rlocus(Plant(n).G);
-% end
+end
 
-motor = motornumber(3);
-Jeff = motor.Jm + Jx;
+figure(2);
+title('Pole-Zero Map of Nominal Plants');
+legend('Motor 1', 'Motor 2', 'Motor 3', 'Motor 4');
 
-% Kv = 60/(2*pi*motor.Kt(3));
-Kv = 10;
-Kt = motor.Kt;
-Ke = Kt(3);
-L = motor.L;
-R = motor.R;
-Bm = motor.Bm;
-% numerator = (-Gv.*motor.Kt(3).*Kv.*g)/(motor.L.*motor.Jeff.*N.*Mb.*(s^5));
-% delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
+figure(3);
+title('Pole-Zero Map of Nominal Plants');
+axis([-0.4 0.1 -0.006 0.006]);
+legend('Motor 1', 'Motor 2', 'Motor 3', 'Motor 4');
 
-num = (-Gv.*Ke.*Kv.*g)/(L.*Jeff.*N.*Mb.*(s^5));
-den = 1 + (((R/L) + (Bm/Jeff))/s) + ((Ke^2 + R.*Bm)/(L.*Jeff))/(s^2);
+% figure(1);
+% subplot(2, 2, 1);
+% rlocus(G(1));
+% % pzmap(G(1));
+% title('Root Locus for Motor 1');
+% % grid;
+% 
+% subplot(2, 2, 2);
+% rlocus(G(2));
+% % pzmap(G(2));
+% title('Root Locus for Motor 2');
+% % grid;
+% 
+% subplot(2, 2, 3);
+% rlocus(G(3));
+% % pzmap(G(3));
+% title('Root Locus for Motor 3');
+% % grid;
+% 
+% subplot(2, 2, 4);
+% rlocus(G(4));
+% % pzmap(G(4));
+% title('Root Locus for Motor 4');
+% % grid;
 
-% num = (-Gv*motor.Kt(3)*Kv*g)/(motor.L*motor.Jeff*N*Mb);
-% den = [1, ((motor.R/motor.L) + (motor.Bm/motor.Jeff)), ((Ke^2 + motor.R*motor.Bm)/(motor.L*motor.Jeff)), 0, 0, 0];
-% motor.G = tf(num, den);
-% Gnom = motor.G;
-
-% motor.G = numerator/delta;
-G = num/den;
-
-Gans = minreal(G);
-% rltool(Gans);
+% motor = motornumber(3);
+% Jeff = motor.Jm + Jx;
+% 
+% % Kv = 60/(2*pi*motor.Kt(3));
+% Kv = 10;
+% Kt = motor.Kt;
+% Ke = Kt(3);
+% L = motor.L;
+% R = motor.R;
+% Bm = motor.Bm;
+% % numerator = (-Gv.*motor.Kt(3).*Kv.*g)/(motor.L.*motor.Jeff.*N.*Mb.*(s^5));
+% % delta = 1 - ((-motor.R/(motor.L.*s)) - (motor.Bm/(motor.Jeff.*s)) - ((Ke.*motor.Kt(3))/(motor.L.*motor.Jeff.*(s^2)))) + ((-motor.R/(motor.L.*s)).*(-motor.Bm/(motor.Jeff.*s)));
+% 
+% num = (-Gv.*Ke.*Kv.*g)/(L.*Jeff.*N.*Mb.*(s^5));
+% den = 1 + (((R/L) + (Bm/Jeff))/s) + ((Ke^2 + R.*Bm)/(L.*Jeff))/(s^2);
+% 
+% % num = (-Gv*motor.Kt(3)*Kv*g)/(motor.L*motor.Jeff*N*Mb);
+% % den = [1, ((motor.R/motor.L) + (motor.Bm/motor.Jeff)), ((Ke^2 + motor.R*motor.Bm)/(motor.L*motor.Jeff)), 0, 0, 0];
+% % motor.G = tf(num, den);
+% % Gnom = motor.G;
+% 
+% % motor.G = numerator/delta;
+% G = num/den;
+% 
+% Gans = minreal(G);
+% % rltool(Gans);
 
 
 
