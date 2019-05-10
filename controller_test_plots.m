@@ -1,5 +1,5 @@
 %% Controller design for Motors 1 and 4
-% close all
+close all
 % Motor 4
 % figure(11)
 % rlocus(G_1_Single)
@@ -52,7 +52,7 @@ title('Control Effort for Motor');
 %% Input to Current Transfer Function Characteristics for Motor 1
 % Find the input to current path for I(s)/R(s)
 C_zpk = zpk(C);
-N = 10;          % Set N = 10
+% N = 10;          % Set N = 10
 K = 1;           % Pre-amp gain.
 
 s4 = tf([1 0 0 0 0], [1]);   % make a s^4 term
